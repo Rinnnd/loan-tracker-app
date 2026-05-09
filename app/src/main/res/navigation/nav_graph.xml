@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_summary">
+    <fragment
+        android:id="@+id/navigation_summary"
+        android:name="com.loantracker.loantracker.SummaryFragment"
+        android:label="@string/tab_summary" />
+    <fragment
+        android:id="@+id/navigation_loans"
+        android:name="com.loantracker.loantracker.LoansFragment"
+        android:label="@string/tab_loans" />
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.loantracker.loantracker.SettingsFragment"
+        android:label="@string/tab_settings" />
+</navigation>

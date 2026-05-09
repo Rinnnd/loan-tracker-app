@@ -1,0 +1,57 @@
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+README.md</font>
+</center></td></tr></table>
+<pre><span class="s0"># </span><span class="s2">贷款还款记账APP</span>
+<span class="s0">## </span><span class="s2">功能说明</span>
+<span class="s2">按照需求开发，完整功能：</span>
+<span class="s0">1. </span><span class="s1">**</span><span class="s2">三个底部导航栏</span><span class="s1">**</span><span class="s2">：总计、全部账目、设置</span>
+<span class="s0">2. </span><span class="s1">**</span><span class="s2">总计页面</span><span class="s1">**</span><span class="s2">：</span>
+   <span class="s0">- </span><span class="s2">显示所有待还借款总额</span>
+   <span class="s0">- </span><span class="s2">显示本月需要还款金额</span>
+   <span class="s0">- </span><span class="s2">显示当前结算日设置</span>
+<span class="s0">3. </span><span class="s1">**</span><span class="s2">全部账目页面</span><span class="s1">**</span><span class="s2">：</span>
+   <span class="s0">- </span><span class="s2">列出你添加的所有借款平台</span>
+   <span class="s0">- </span><span class="s2">每个借款显示平台名称、还款日、每月还款金额</span>
+   <span class="s0">- </span><span class="s2">可单独勾选是否已经还款</span>
+   <span class="s0">- </span><span class="s2">提供一键批量标记全部已还款功能</span>
+   <span class="s0">- </span><span class="s2">浮动按钮添加新借款</span>
+<span class="s0">4. </span><span class="s1">**</span><span class="s2">设置页面</span><span class="s1">**</span><span class="s2">：</span>
+   <span class="s0">- </span><span class="s2">可自定义设置每月几号开始算作下个月账单</span>
+   <span class="s0">- </span><span class="s2">支持 1-31 号任意设置</span>
+   <span class="s0">- </span><span class="s2">默认是每月 1 号，即自然月</span>
+<span class="s0">## </span><span class="s2">项目特点</span>
+<span class="s0">- </span><span class="s2">使用 Room 数据库本地存储，数据存在你手机本地，安全隐私</span>
+<span class="s0">- </span><span class="s2">完全自动计算，勾选后数据自动同步到总计页面</span>
+<span class="s0">- </span><span class="s2">支持添加多个借款平台，每个平台不同还款日</span>
+<span class="s0">- </span><span class="s2">Material Design 设计，界面美观流畅</span>
+<span class="s0">## </span><span class="s2">如何生成APK</span>
+<span class="s0">### </span><span class="s2">方法一：使用 Android Studio（推荐）</span>
+<span class="s0">1. </span><span class="s2">打开 Android Studio</span>
+<span class="s0">2. </span><span class="s2">选择 `File -</span><span class="s1">&gt; </span><span class="s2">Open`，选择 `loan_tracker_app` 目录</span>
+<span class="s0">3. </span><span class="s2">Android Studio 会自动同步 Gradle</span>
+<span class="s0">4. </span><span class="s2">连接你的 Android 手机，打开开发者调试模式</span>
+<span class="s0">5. </span><span class="s2">点击 `Run -</span><span class="s1">&gt; </span><span class="s2">Run </span><span class="s1">'</span><span class="s2">app'` 就可以安装到手机</span>
+<span class="s0">6. </span><span class="s2">或者点击 `Build -</span><span class="s1">&gt; </span><span class="s2">Generate Signed Bundle / APK` 生成正式APK</span>
+<span class="s0">### </span><span class="s2">方法二：使用在线构建服务</span>
+<span class="s2">可以将项目上传到 Github，使用 Github Actions + Android 镜像自动构建出 APK</span>
+<span class="s0">## </span><span class="s2">使用方法</span>
+<span class="s0">1. </span><span class="s2">打开APP，进入「全部账目」</span>
+<span class="s0">2. </span><span class="s2">点击右下角 + 号添加你的每个借款：输入平台名称、还款日、每月还款金额</span>
+<span class="s0">3. </span><span class="s2">添加完成后，在列表中勾选已经还过款的项目</span>
+<span class="s0">4. </span><span class="s2">切换到「总计」查看总待还和本月待还</span>
+<span class="s0">5. </span><span class="s2">如果需要修改结算日期，进入「设置」修改即可</span></pre>
+</body>
+</html>

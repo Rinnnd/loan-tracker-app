@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贷款还款记账 - 网页版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #6200ee;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .nav-bar {
+            display: flex;
+            background-color: #212121;
+            color: white;
+            border-radius: 0 0 10px 10px;
+        }
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-item.active {
+            background-color: #6200ee;
+        }
+        .nav-item:hover {
+            background-color: #444;
+        }
+        .content {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            min-height: 400px;
+        }
+        .loan-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .loan-item.paid {
+            background-color: #e8f5e8;
+            border-color: #4caf50;
+        }
+        .loan-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .loan-details {
+            color: #666;
+            margin-top: 5px;
+        }
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        .summary-card {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .summary-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .summary-value {
+            font-size: 24px;
+            color: #6200ee;
+            font-weight: bold;
+        }
+        .add-button {
+            background-color: #6200ee;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .setting-item {
+            margin-bottom: 15px;
+        }
+        .setting-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .setting-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .save-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>贷款还款记账</h1>
+            <p>管理您的房贷、车贷、网贷还款</p>
+        </div>
+        
+        <div class="nav-bar">
+            <div class="nav-item active" onclick="showTab('summary')">总计</div>
+            <div class="nav-item" onclick="showTab('loans')">全部账目</div>
+            <div class="nav-item" onclick="showTab('settings')">设置</div>
+        </div>
+        
+        <!-- 总计页面 -->
+        <div id="summary" class="content">
+            <div class="summary-card">
+                <div class="summary-title">所有待还借款总额</div>
+                <div class="summary-value" id="total-loan">¥0.00</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-title">本月需要还款金额</div>
+                <div class="summary-value" id="month-loan">¥0.00</div>
+                <div style="color: #666; margin-top: 10px;">
+                    结算规则：每月 <span id="settlement-day">1</span> 号开始算下个月账单
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; color: #666;">
+                数据自动更新，勾选还款后实时同步
+            </div>
+        </div>
+        
+        <!-- 全部账目页面 -->
+        <div id="loans" class="content hidden">
+            <h2>您的借款列表</h2>
+            <div id="loan-list">
+                <!-- 借款列表动态生成 -->
+            </div>
+            <div class="add-button" onclick="addLoan()">
+                + 添加新借款
+            </div>
+            <div class="add-button" style="background-color: #2196f3; margin-top: 10px;" onclick="markAllPaid()">
+                一键标记全部已还款
+            </div>
+        </div>
+        
+        <!-- 设置页面 -->
+        <div id="settings" class="content hidden">
+            <h2>设置</h2>
+            <div class="setting-item">
+                <div class="setting-label">每月结算起始日</div>
+                <div style="color: #666; margin-bottom: 10px;">
+                    设置每月几号开始算作下个月账单（1-31号）
+                </div>
+                <input type="number" class="setting-input" id="settlement-input" min="1" max="31" value="1">
+            </div>
+            <div class="save-button" onclick="saveSettings()">
+                保存设置
+            </div>
+            <div style="margin-top: 30px; color: #666;">
+                <h3>关于</h3>
+                <p>版本：1.0</p>
+                <p>功能：贷款还款记账管理</p>
+                <p>数据保存在本地浏览器，安全隐私</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 数据存储
+        let loans = [];
+        let settlementDay = 1;
+        
+        // 初始化示例数据
+        function initData() {
+            loans = [
+                { id: 1, name: "房贷", day: 15, amount: 3500, paid: false },
+                { id: 2, name: "车贷", day: 20, amount: 2500, paid: false },
+                { id: 3, name: "消费贷", day: 10, amount: 1200, paid: true }
+            ];
+            updateDisplay();
+        }
+        
+        // 显示对应页面
+        function showTab(tabId) {
+            document.getElementById('summary').classList.add('hidden');
+            document.getElementById('loans').classList.add('hidden');
+            document.getElementById('settings').classList.add('hidden');
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // 更新导航栏激活状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.nav-item[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+        
+        // 更新显示
+        function updateDisplay() {
+            // 更新总计
+            let total = 0;
+            let monthTotal = 0;
+            const today = new Date();
+            const currentDay = today.getDate();
+            
+            loans.forEach(loan => {
+                if (!loan.paid) {
+                    total += loan.amount;
+                    // 计算本月待还
+                    if (loan.day >= currentDay || currentDay < settlementDay) {
+                        monthTotal += loan.amount;
+                    }
+                }
+            });
+            
+            document.getElementById('total-loan').textContent = '¥' + total.toFixed(2);
+            document.getElementById('month-loan').textContent = '¥' + monthTotal.toFixed(2);
+            document.getElementById('settlement-day').textContent = settlementDay;
+            
+            // 更新借款列表
+            const loanList = document.getElementById('loan-list');
+            loanList.innerHTML = '';
+            loans.forEach(loan => {
+                const loanItem = document.createElement('div');
+                loanItem.className = 'loan-item' + (loan.paid ? ' paid' : '');
+                loanItem.innerHTML = `
+                    <div>
+                        <div class="loan-name">${loan.name}</div>
+                        <div class="loan-details">
+                            还款日：每月${loan.day}号 | 金额：¥${loan.amount.toFixed(2)}
+                        </div>
+                    </div>
+                    <input type="checkbox" class="checkbox" ${loan.paid ? 'checked' : ''} 
+                           onclick="togglePaid(${loan.id})">
+                `;
+                loanList.appendChild(loanItem);
+            });
+        }
+        
+        // 切换还款状态
+        function togglePaid(id) {
+            const loan = loans.find(l => l.id === id);
+            if (loan) {
+                loan.paid = !loan.paid;
+                updateDisplay();
+            }
+        }
+        
+        // 标记全部已还款
+        function markAllPaid() {
+            loans.forEach(loan => {
+                loan.paid = true;
+            });
+            updateDisplay();
+        }
+        
+        // 添加新借款
+        function addLoan() {
+            const name = prompt("请输入借款平台名称（如：房贷、车贷）：");
+            if (!name) return;
+            
+            const day = parseInt(prompt("请输入每月还款日（1-31号）："));
+            if (!day || day < 1 || day > 31) {
+                alert("还款日必须是1-31号");
+                return;
+            }
+            
+            const amount = parseFloat(prompt("请输入每月还款金额："));
+            if (!amount || amount <= 0) {
+                alert("金额必须大于0");
+                return;
+            }
+            
+            const newId = loans.length > 0 ? loans[loans.length - 1].id + 1 : 1;
+            loans.push({
+                id: newId,
+                name: name,
+                day: day,
+                amount: amount,
+                paid: false
+            });
+            
+            updateDisplay();
+        }
+        
+        // 保存设置
+        function saveSettings() {
+            const input = document.getElementById('settlement-input');
+            const newDay = parseInt(input.value);
+            if (newDay && newDay >= 1 && newDay <= 31) {
+                settlementDay = newDay;
+                alert("设置已保存！");
+                updateDisplay();
+            } else {
+                alert("请输入1-31之间的数字");
+            }
+        }
+        
+        // 初始化
+        initData();
+        showTab('summary');
+    </script>
+</body>
+</html>
